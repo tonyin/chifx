@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>Edit Security</h3>
+    <form id="edit-security" class="well form-horizontal"
+          action="{{ url_for('edit_security', security_id=security.key.id()) }}" method="post" accept-charset="utf-8">
+        <fieldset>
+            {{ form.hidden_tag() }}
+            <input type="hidden" name="mode" value="edit" />
+            <div class="control-group">
+                <div class="control-label">{{ form.position.label }}</div>
+                <div class="controls">
+                    {{ form.position|safe }}
+                    {% if form.position.errors %}
+                        <ul class="errors">
+                            {% for error in form.position.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">{{ form.name.label }}</div>
+                <div class="controls">
+                    {{ form.name|safe }}
+                    {% if form.name.errors %}
+                        <ul class="errors">
+                            {% for error in form.name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">{{ form.team.label }}</div>
+                <div class="controls">
+                    {{ form.team|safe }}
+                    {% if form.team.errors %}
+                        <ul class="errors">
+                            {% for error in form.team.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <input class="btn btn-primary" type="submit" value="Save Changes"/>
+                    <a class="btn cancel" href="{{ url_for('security', pos=security.position) }}">Cancel</a>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+{% endblock content %}
