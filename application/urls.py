@@ -27,8 +27,8 @@ app.add_url_rule('/security/<int:security_id>/edit', 'edit_security', view_func=
 # Delete a security
 app.add_url_rule('/security/<int:security_id>/delete', view_func=views.delete_security, methods=['POST'])
 
-# Contrived admin-only view example
-app.add_url_rule('/admin_only', 'admin_only', view_func=views.admin_only)
+# Admin create/edit view of securities
+app.add_url_rule('/admin_list', 'admin_list', view_func=views.admin_list, methods=['GET', 'POST'])
 
 
 ## Error handlers

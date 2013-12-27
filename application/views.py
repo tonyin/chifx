@@ -20,17 +20,19 @@ from models import Security
 # Flask-Cache (configured to use App Engine Memcache API)
 cache = Cache(app)
 
-# Globals
-import globals
+# Custom scripts
+import scripts
 
 def index():
     """Main page"""
-    return render_template('index.html')
+    user = scripts.check_user(['index'])
+    return render_template('index.html', user=user)
 
 @login_required
 def security(pos):
     """List all securities of pos"""
-    title = globals.position[pos]
+    user = scripts.check_user(['security', pos])
+    title = scripts.position[pos]
     securities = Security.query(Security.position == pos)
     form = SecurityForm()
     if form.validate_on_submit():
@@ -47,7 +49,7 @@ def security(pos):
         except CapabilityDisabledError:
             flash(u'App Engine Datastore is currently in read-only mode.', 'info')
             return redirect(url_for('security', pos=pos))
-    return render_template('security.html', pos=pos, title=title, securities=securities, form=form)
+    return render_template('security.html', pos=pos, title=title, securities=securities, form=form, user=user)
 
 @login_required
 def edit_security(security_id):
@@ -79,9 +81,25 @@ def delete_security(security_id):
         return redirect(url_for('security', pos))
 
 @admin_required
-def admin_only():
-    """This view requires an admin account"""
-    return 'Super-seekrit admin page.'
+def admin_list():
+    """Admin create/edit view"""
+    securities = Security.query()
+    form = SecurityForm()
+    if form.validate_on_submit():
+        sec = Security(
+            position=form.position.data,
+            name=form.name.data,
+            team=form.team.data
+        )
+        try:
+            sec.put()
+            sec_id = sec.key.id()
+            flash(u'Security %s successfully saved.' % sec_id, 'success')
+            return redirect(url_for('admin_list'))
+        except CapabilityDisabledError:
+            flash(u'App Engine Datastore is currently in read-only mode.', 'info')
+            return redirect(url_for('admin_list'))
+    return render_template('admin_list.html', securities=securities, form=form)
 
 def warmup():
     """App Engine warmup handler

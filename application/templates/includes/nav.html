@@ -1,4 +1,4 @@
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -24,6 +24,20 @@
                         <a href="">My Portfolio</a>
                     </li>
                 </ul>
+                {% if user[0] %}
+                <p class="navbar-text pull-right">Welcome, {{ user[0].nickname() }}.</p>
+                <ul class="nav pull-right">
+                    <li>
+                        <a href="{{ user[1] }}">Logout</a>
+                    </li>
+                </ul>
+                {% else %}
+                <ul class="nav pull-right">
+                    <li>
+                        <a href="{{ user[1] }}">Login</a>
+                    </li>
+                </ul>
+                {% endif %}
             </div><!--/.nav-collapse -->
         </div><!-- /.navbar .container -->
     </div><!-- /.navbar-inner -->
