@@ -34,22 +34,7 @@ def security(pos):
     user = scripts.check_user(['security', pos])
     title = scripts.position[pos]
     securities = Security.query(Security.position == pos)
-    form = SecurityForm()
-    if form.validate_on_submit():
-        sec = Security(
-            position=form.position.data,
-            name=form.name.data,
-            team=form.team.data
-        )
-        try:
-            sec.put()
-            sec_id = sec.key.id()
-            flash(u'Security %s successfully saved.' % sec_id, 'success')
-            return redirect(url_for('security', pos=pos))
-        except CapabilityDisabledError:
-            flash(u'App Engine Datastore is currently in read-only mode.', 'info')
-            return redirect(url_for('security', pos=pos))
-    return render_template('security.html', pos=pos, title=title, securities=securities, form=form, user=user)
+    return render_template('security.html', pos=pos, title=title, securities=securities, user=user)
 
 @login_required
 def edit_security(security_id):
@@ -83,6 +68,7 @@ def delete_security(security_id):
 @admin_required
 def admin_list():
     """Admin create/edit view"""
+    user = scripts.check_user(['admin_list'])
     securities = Security.query()
     form = SecurityForm()
     if form.validate_on_submit():
@@ -99,7 +85,7 @@ def admin_list():
         except CapabilityDisabledError:
             flash(u'App Engine Datastore is currently in read-only mode.', 'info')
             return redirect(url_for('admin_list'))
-    return render_template('admin_list.html', securities=securities, form=form)
+    return render_template('admin_list.html', securities=securities, form=form, user=user)
 
 def warmup():
     """App Engine warmup handler

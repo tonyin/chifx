@@ -19,7 +19,7 @@ app.add_url_rule('/_ah/warmup', 'warmup', view_func=views.warmup)
 app.add_url_rule('/', 'index', view_func=views.index)
 
 # Security
-app.add_url_rule('/security/<pos>', 'security', view_func=views.security, methods=['GET', 'POST'])
+app.add_url_rule('/security/<pos>', 'security', view_func=views.security, methods=['GET'])
 
 # Edit a security
 app.add_url_rule('/security/<int:security_id>/edit', 'edit_security', view_func=views.edit_security, methods=['GET', 'POST'])
