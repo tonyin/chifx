@@ -1,0 +1,60 @@
+<div class="modal hide fade" id="new-order-modal">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>Add a New Order</h3>
+    </div>
+    <div class="modal-body">
+        <form id="new-order-form" class="well form-horizontal"
+            action="{{ url_for('sec_info', pos=sec.position, id=sec.key.id()) }}" method="post" accept-charset="utf-8">
+            <fieldset>
+                {{ form.hidden_tag() }}
+                <div class="control-group">
+                    <div class="control-label">{{ form.buysell.label }}</div>
+                    <div class="controls">
+                        {{ form.buysell|safe }}
+                        {% if form.buysell.errors %}
+                        <ul class="errors">
+                            {% for error in form.buysell.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">{{ form.price.label }}</div>
+                    <div class="controls">
+                        {{ form.price|safe }}
+                        {% if form.price.errors %}
+                        <ul class="errors">
+                            {% for error in form.price.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">{{ form.volume.label }}</div>
+                    <div class="controls">
+                        {{ form.volume|safe }}
+                        {% if form.volume.errors %}
+                        <ul class="errors">
+                            {% for error in form.volume.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn" data-dismiss="modal">Cancel</button>
+                        <input class="btn btn-primary" type="submit" value="Add Order"/>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+

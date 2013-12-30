@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block style_block %}
+    <style type="text/css">
+        table.table { width: 60%; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h2>{{ sec.name }}</h2>
+    <div>&nbsp;</div>
+    
+	<p>
+		<a class="btn btn-primary" data-toggle="modal" data-target="#new-order-modal">
+			<i class="icon-plus-sign" icon-white"></i>
+			New order
+		</a>
+	</p>
+	{% include 'new_order.html' %}
+	
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>Timestamp</th>
+				<th>Buy/Sell</th>
+				<th>Price</th>
+				<th>Volume</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			{% if orders %}
+				{% for order in orders %}
+				<td>{{ order.timestamp }}</td>
+				<td>{% if order.buysell %}Buy{% else %}Sell{% endif %}</td>
+				<td>{{ order.price }}</td>
+				<td>{{ order.volume }}</td>
+				{% endfor %}
+			{% endif %}
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock content %}
+
+{% block tail_script %}
+	<script>
+        var FormHelpers = {
+            validate: function (form, evt) {
+                // Form validation for modal dialog
+                var buysell = form.find('#buysell').val();
+                var price = form.find('#price').val();
+                var volume = form.find('#volume').val();
+                if (!(buysell)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#buysell', 'Buysell is required', 'right');
+                }
+                if (!(price)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#price', 'Price is required', 'right');
+                }
+				if (!(volume)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#volume', 'Volume is required', 'right');
+                }
+            },
+            init: function () {
+                var self = this;
+                var order_form = $('#order-form');
+                order_form.on('submit', function (evt) {
+                    self.validate(order_form, evt)
+                });
+            }
+        };
+        $(document).ready(function() {
+            FormHelpers.init();
+        });
+    </script>
+{% endblock tail_script %}

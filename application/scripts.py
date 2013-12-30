@@ -17,12 +17,12 @@ position = {
 def check_user(view):
     user = users.get_current_user()
     if user:
-        if view[0] == 'security':
+        if view[0] in ('security', 'sec_info'):
             log = users.create_logout_url(url_for('index'))
         else:
             log = users.create_logout_url(url_for(view[0]))
     else:
-        if view[0] == 'security':
+        if view[0] in ('security', 'sec_info'):
             log = users.create_login_url(url_for(view[0], pos=view[1]))
         else:
             log = users.create_login_url(url_for(view[0]))

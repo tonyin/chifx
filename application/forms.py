@@ -10,13 +10,19 @@ See: http://flask.pocoo.org/docs/patterns/wtforms/
 
 from flaskext import wtf
 from flaskext.wtf import validators
-from wtforms.ext.appengine.ndb import model_form
+from wtforms_appengine.ndb import model_form
 
-from .models import Security
+from .models import Security, Order
 
 
 SecurityForm = model_form(Security, wtf.Form, field_args={
     'position': dict(validators=[validators.Required()]),
     'name': dict(validators=[validators.Required()]),
     'team': dict(),
+})
+
+OrderForm = model_form(Order, wtf.Form, field_args={
+    'buysell': dict(validators=[validators.Required()]),
+    'price': dict(validators=[validators.Required()]),
+    'volume': dict(validators=[validators.Required()]),
 })

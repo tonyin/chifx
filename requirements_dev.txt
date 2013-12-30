@@ -5,3 +5,4 @@ PIL
 jinja2
 simplejson
 unittest2
+wtforms_appengine

@@ -13,8 +13,8 @@ from flask_cache import Cache
 
 from application import app
 from decorators import login_required, admin_required
-from forms import SecurityForm
-from models import Security
+from forms import SecurityForm, OrderForm
+from models import Security, Order
 
 
 # Flask-Cache (configured to use App Engine Memcache API)
@@ -34,9 +34,35 @@ def security(pos):
     user = scripts.check_user(['security', pos])
     title = scripts.position[pos]
     securities = Security.query(Security.position == pos)
-    return render_template('security.html', pos=pos, title=title, securities=securities, user=user)
+    return render_template('security.html', pos=pos, user=user, title=title, securities=securities)
 
 @login_required
+def sec_info(pos, id):
+    """Individual security info"""
+    user = scripts.check_user(['sec_info', pos])
+    sec = Security.get_by_id(id)
+    orders = Order.query(Order.security == sec)
+    form = OrderForm()
+    if form.validate_on_submit():
+        ord = Order(
+            user = user[0],
+            buysell = form.buysell.data,
+            security = sec,
+            price = form.price.data,
+            volume = form.volume.data,
+            active = True
+        )
+        try:
+            ord.put()
+            ord_id = ord.key.id()
+            flash(u'Order %s successfully saved.' % ord_id, 'success')
+            return redirect(url_for('sec_info', pos=pos, id=id))
+        except CapabilityDisabledError:
+            flash(u'App Engine Datastore is currently in read-only mode.', 'info')
+            return redirect(url_for('sec_info', pos=pos, id=id))
+    return render_template('sec_info.html', user=user, sec=sec, orders=orders, form=form)
+
+@admin_required
 def edit_security(security_id):
     """Edit security attributes"""
     security = Security.get_by_id(security_id)
@@ -52,7 +78,7 @@ def edit_security(security_id):
             return redirect(url_for('security', pos=security.position))
     return render_template('edit_security.html', security=security, form=form)
 
-@login_required
+@admin_required
 def delete_security(security_id):
     """Delete security"""
     security = Security.get_by_id(security_id)
@@ -73,9 +99,9 @@ def admin_list():
     form = SecurityForm()
     if form.validate_on_submit():
         sec = Security(
-            position=form.position.data,
-            name=form.name.data,
-            team=form.team.data
+            position = form.position.data,
+            name = form.name.data,
+            team = form.team.data
         )
         try:
             sec.put()
@@ -85,7 +111,7 @@ def admin_list():
         except CapabilityDisabledError:
             flash(u'App Engine Datastore is currently in read-only mode.', 'info')
             return redirect(url_for('admin_list'))
-    return render_template('admin_list.html', securities=securities, form=form, user=user)
+    return render_template('admin_list.html', user=user, securities=securities, form=form)
 
 def warmup():
     """App Engine warmup handler

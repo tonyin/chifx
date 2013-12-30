@@ -25,14 +25,16 @@
                     </li>
                 </ul>
                 {% if user[0] %}
-                <p class="navbar-text pull-right">Welcome, {{ user[0].nickname() }}.</p>
-                <ul class="nav pull-right">
+                <ul class="nav">
+					<li>
+						<p class="navbar-text">Welcome, {{ user[0].nickname() }}.</p>
+					</li>
                     <li>
                         <a href="{{ user[1] }}">Logout</a>
                     </li>
                 </ul>
                 {% else %}
-                <ul class="nav pull-right">
+                <ul class="nav">
                     <li>
                         <a href="{{ user[1] }}">Login</a>
                     </li>

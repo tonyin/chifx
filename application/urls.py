@@ -27,6 +27,10 @@ app.add_url_rule('/security/<int:security_id>/edit', 'edit_security', view_func=
 # Delete a security
 app.add_url_rule('/security/<int:security_id>/delete', view_func=views.delete_security, methods=['POST'])
 
+# Security info
+app.add_url_rule('/security/<pos>/<int:id>', 'sec_info', view_func=views.sec_info, methods=['GET', 'POST'])
+
+
 # Admin create/edit view of securities
 app.add_url_rule('/admin_list', 'admin_list', view_func=views.admin_list, methods=['GET', 'POST'])
 
