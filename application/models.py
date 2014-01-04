@@ -19,9 +19,9 @@ class Order(ndb.Model):
     """Orders on a security"""
     timestamp = ndb.DateTimeProperty(auto_now_add=True)
     user = ndb.UserProperty(required=True)
-    buysell = ndb.StringProperty(required=True, choices=["Buy","Sell"])
     security = ndb.StructuredProperty(Security)
-    price = ndb.FloatProperty(required=True)
+    buysell = ndb.StringProperty(required=True, choices=["Buy","Sell"])
+    price = ndb.IntegerProperty(required=True)
     volume = ndb.IntegerProperty(required=True)
     active = ndb.BooleanProperty(required=True)
 

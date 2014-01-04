@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block style_block %}
+    <style type="text/css">
+        table.table { width: 60%; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Portfolio: {{ user[0].nickname() }}</h2>
+    <div>&nbsp;</div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+				<th>Timestamp</th>
+                <th>Security</th>
+                <th>Buy/Sell</th>
+                <th>Price</th>
+                <th>Volume</th>
+				<th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.timestamp }}</td>
+                <td>{{ order.security.name }}</td>
+                <td>{{ order.buysell }}</td>
+                <td>{{ order.price }}</td>
+                <td>{{ order.volume }}</td>
+				<td>
+					<a href="{{ url_for('delete_order', nickname=user[0].nickname(), ord_key=order.key.urlsafe()) }}" class="btn">Delete</a>
+				</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}
+
+{% block tail_script %}
+{% endblock tail_script %}

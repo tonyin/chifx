@@ -18,6 +18,32 @@
 		</a>
 	</p>
 	{% include 'new_order.html' %}
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Buy Volume</th>
+				<th>Price</th>
+				<th>Sell Volume</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for price, volume in book['sells'].items() %}
+			<tr>
+				<td>&nbsp;</td>
+				<td>{{ price }}</td>
+				<td>{{ volume }}</td>
+			</tr>
+			{% endfor %}
+			{% for price, volume in book['buys'].items() %}
+			<tr>
+				<td>{{ volume }}</td>
+				<td>{{ price }}</td>
+				<td>&nbsp;</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 	
 	<table class="table table-bordered table-striped">
 		<thead>
@@ -29,16 +55,16 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
 			{% if orders %}
-				{% for order in orders %}
+			{% for order in orders %}
+			<tr>
 				<td>{{ order.timestamp }}</td>
-				<td>{% if order.buysell %}Buy{% else %}Sell{% endif %}</td>
+				<td>{{ order.buysell }}</td>
 				<td>{{ order.price }}</td>
 				<td>{{ order.volume }}</td>
-				{% endfor %}
-			{% endif %}
 			</tr>
+			{% endfor %}
+			{% endif %}
 		</tbody>
 	</table>
 

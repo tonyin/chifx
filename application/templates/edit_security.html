@@ -3,7 +3,7 @@
 {% block content %}
     <h3>Edit Security</h3>
     <form id="edit-security" class="well form-horizontal"
-          action="{{ url_for('edit_security', security_id=security.key.id()) }}" method="post" accept-charset="utf-8">
+          action="{{ url_for('edit_security', pos=sec.position, sec_id=sec.key.id()) }}" method="post" accept-charset="utf-8">
         <fieldset>
             {{ form.hidden_tag() }}
             <input type="hidden" name="mode" value="edit" />

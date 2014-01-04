@@ -27,7 +27,7 @@
             <tr>
                 <td>{{ p_id }}</td>
                 <td>
-					<a href="{{ url_for('sec_info', pos=p.position, id=p_id) }}">{{ p.name }}</a>
+					<a href="{{ url_for('sec_info', pos=pos, sec_id=p_id) }}">{{ p.name }}</a>
 				</td>
                 <td>{{ p.team }}</td>
                 <td></td>

@@ -21,7 +21,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="">My Portfolio</a>
+                        <a href="{{ url_for('portfolio', nickname=user[0].nickname()) }}">My Portfolio</a>
                     </li>
                 </ul>
                 {% if user[0] %}
