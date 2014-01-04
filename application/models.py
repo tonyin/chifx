@@ -28,8 +28,11 @@ class Order(ndb.Model):
 class Trade(ndb.Model):
     """Trades which are matched Orders"""
     timestamp = ndb.DateTimeProperty(auto_now_add=True)
-    buy_order = ndb.StructuredProperty(Order)
-    sell_order = ndb.StructuredProperty(Order)
+    buy_user = ndb.UserProperty()
+    sell_user = ndb.UserProperty()
+    security = ndb.StructuredProperty(Security)
+    price = ndb.IntegerProperty(required=True)
+    volume = ndb.IntegerProperty(required=True)
 
 class Portfolio(ndb.Model):
     """Portfolio storing order and trade info"""

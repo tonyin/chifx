@@ -10,8 +10,9 @@ from flask import url_for, flash
 
 from collections import OrderedDict
 from itertools import islice
+from datetime import datetime
 
-from models import Security, Order
+from models import Security, Order, Trade
 
 
 BOOK_TOP_LEVELS = 4
@@ -40,7 +41,7 @@ def construct_book(sec):
     # Get sorted
     b1 = Order.query(Order.security == sec, Order.buysell == 'Buy', Order.active == True, ancestor=sec.key).order(-Order.price)
     s1 = Order.query(Order.security == sec, Order.buysell == 'Sell', Order.active == True, ancestor=sec.key).order(Order.price)
-
+    
     # BUYS
     # Combine price volume
     b2 = {}
@@ -92,7 +93,7 @@ def construct_book(sec):
     
     return book
 
-def match_orders(sec, aggr):
+def match_orders(sec):
     """Match orders in cross"""
     # Get buy and sell lists
     b = Order.query(Order.security == sec, Order.buysell == 'Buy', Order.active == True, ancestor=sec.key).order(-Order.price, Order.timestamp)
@@ -109,17 +110,14 @@ def match_orders(sec, aggr):
         if sn + 1 > len(s):
             break
         if b[bn].price >= s[sn].price:
-            #t = Trade()
-            #t.buy_order = b[bn].id
-            #t.sell_order = s[sn].id
-            #t.timestamp = datetime.utcnow()
-            #if aggr == 1:
-            #    t.price = s[sn].price
-            #else:
-            #    t.price = b[bn].price
+            t = Trade()
+            t.timestamp = datetime.utcnow()
+            t.buy_user = b[bn].user
+            t.sell_user = s[sn].user
+            t.security = b[bn].security
+            t.price = b[bn].price
             if b[bn].volume > s[sn].volume:
-            #    t.volume = s[sn].volume
-            #    db.session.add(t)
+                t.volume = s[sn].volume
                 b[bn] = b[bn].key.get()
                 s[sn] = s[sn].key.get()
                 b[bn].volume += -s[sn].volume
@@ -129,8 +127,7 @@ def match_orders(sec, aggr):
                 sn += 1
                 
             elif b[bn].volume < s[sn].volume:
-            #    t.volume = b[bn].volume
-            #    db.session.add(t)
+                t.volume = b[bn].volume
                 b[bn] = b[bn].key.get()
                 s[sn] = s[sn].key.get()
                 s[sn].volume += -b[bn].volume
@@ -139,8 +136,7 @@ def match_orders(sec, aggr):
                 s[sn].put()
                 bn += 1
             elif b[bn].volume == s[sn].volume:
-            #    t.volume = b[bn].volume
-            #    db.session.add(t)
+                t.volume = b[bn].volume
                 b[bn] = b[bn].key.get()
                 s[sn] = s[sn].key.get()
                 b[bn].volume = 0
@@ -151,5 +147,6 @@ def match_orders(sec, aggr):
                 s[sn].put()
                 bn += 1
                 sn += 1
+            t.put()
             continue
         break

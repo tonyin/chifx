@@ -1,3 +1,4 @@
 fix new order/security popup errors
 implement error handling of non-existent entities
 get rid of (convert to?) decimal points
+generate sec_info link with each portfolio order

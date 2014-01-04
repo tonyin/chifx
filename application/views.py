@@ -15,7 +15,7 @@ from flask_cache import Cache
 from application import app
 from decorators import login_required, admin_required
 from forms import SecurityForm, OrderForm
-from models import Security, Order
+from models import Security, Order, Trade
 
 
 # Flask-Cache (configured to use App Engine Memcache API)
@@ -59,7 +59,7 @@ def sec_info(pos, sec_id):
             ord.put()
             ord_id = ord.key.id()
             flash(u'Order %s successfully saved.' % ord_id, 'success')
-            scripts.match_orders(sec, form.buysell.data)
+            scripts.match_orders(sec)
             return redirect(url_for('sec_info', pos=pos, sec_id=sec_id))
         except CapabilityDisabledError:
             flash(u'App Engine Datastore is currently in read-only mode.', 'info')
@@ -99,7 +99,8 @@ def portfolio(nickname):
     """List all orders in a user's portfolio"""
     user = scripts.check_user(['portfolio'])
     orders = Order.query(Order.user == user[0], Order.active == True).order(Order.security.name, -Order.timestamp)
-    return render_template('portfolio.html', user=user, orders=orders)
+    trades = Trade.query(ndb.OR(Trade.buy_user == user[0], Trade.sell_user == user[0]))
+    return render_template('portfolio.html', user=user, orders=orders, trades=trades)
 
 @login_required
 def delete_order(nickname, ord_key):
