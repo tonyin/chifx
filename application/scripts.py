@@ -163,5 +163,9 @@ def match_orders(sec):
                 bn += 1
                 sn += 1
             t.put()
+            
+            # Update security last traded price
+            
+            
             continue
         break
