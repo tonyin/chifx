@@ -37,5 +37,4 @@ class Trade(ndb.Model):
 class Portfolio(ndb.Model):
     """Portfolio storing order and trade info"""
     user = ndb.UserProperty(required=True)
-    orders = ndb.StructuredProperty(Order, repeated=True)
-    trades = ndb.StructuredProperty(Trade, repeated=True)
+    points = ndb.IntegerProperty(required=True)

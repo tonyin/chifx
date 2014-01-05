@@ -12,7 +12,7 @@ from flaskext import wtf
 from flaskext.wtf import validators
 from wtforms_appengine.ndb import model_form
 
-from models import Security, Order
+from models import Security, Order, Portfolio
 
 
 SecurityForm = model_form(Security, wtf.Form, field_args={
@@ -23,6 +23,6 @@ SecurityForm = model_form(Security, wtf.Form, field_args={
 
 OrderForm = model_form(Order, wtf.Form, field_args={
     'buysell': dict(validators=[validators.Required()]),
-    'price': dict(validators=[validators.Required(), validators.NumberRange(min=1)]),
-    'volume': dict(validators=[validators.Required(), validators.NumberRange(max=1000)]),
+    'price': dict(validators=[validators.Required(), validators.NumberRange(min=1,max=100)]),
+    'volume': dict(validators=[validators.Required(), validators.NumberRange(min=1,max=1000)]),
 })

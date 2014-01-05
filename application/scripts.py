@@ -12,10 +12,11 @@ from collections import OrderedDict
 from itertools import islice
 from datetime import datetime
 
-from models import Security, Order, Trade
+from models import Security, Order, Trade, Portfolio
 
 
 BOOK_TOP_LEVELS = 4
+START_POINTS = 1000
 
 position = {
     'qb': 'Quarterbacks',
@@ -24,8 +25,8 @@ position = {
 }
 
 def check_user(view):
-    user = users.get_current_user()
-    if user:
+    c_user = users.get_current_user()
+    if c_user:
         log = users.create_logout_url(url_for('index'))
     else:
         if view[0] in ('security'):
@@ -34,7 +35,20 @@ def check_user(view):
             log = users.create_login_url(url_for(view[0], pos=view[1], sec_id=view[2]))
         else:
             log = users.create_login_url(url_for(view[0]))
-    return [user, log]
+    
+    # Create a new portfolio if new user
+    ptfs = Portfolio.query(Portfolio.user == c_user)
+    ptfs = list(ptfs)
+    if len(ptfs) == 0:
+        ptf = Portfolio(
+            user = c_user,
+            points = START_POINTS
+        )
+        ptf.put()
+        ptf_id = ptf.key.id()
+        flash(u'Portfolio %s successfully created.' % ptf_id, 'success')
+    
+    return [c_user, log]
 
 def construct_book(sec): 
     """Create buy and sell top depths"""

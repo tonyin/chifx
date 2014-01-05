@@ -24,20 +24,23 @@ app.add_url_rule('/security/<pos>', 'security', view_func=views.security)
 # Security info
 app.add_url_rule('/security/<pos>/<int:sec_id>', 'sec_info', view_func=views.sec_info, methods=['GET', 'POST'])
 
-# Edit security
-app.add_url_rule('/security/<pos>/<int:sec_id>/edit', 'edit_security', view_func=views.edit_security, methods=['GET', 'POST'])
-
-# Delete security
-app.add_url_rule('/security/<pos>/<int:sec_id>/delete', view_func=views.delete_security, methods=['POST'])
-
-# Admin create/edit securities
-app.add_url_rule('/admin_list', 'admin_list', view_func=views.admin_list, methods=['GET', 'POST'])
-
 # User portfolio
 app.add_url_rule('/<nickname>/portfolio', 'portfolio', view_func=views.portfolio, methods=['GET', 'POST'])
 
 # Delete order
 app.add_url_rule('/<nickname>/portfolio/<ord_key>/delete', 'delete_order', view_func=views.delete_order, methods=['GET', 'POST'])
+
+# Admin - securities
+app.add_url_rule('/admin/security', 'admin_security', view_func=views.admin_security, methods=['GET', 'POST'])
+
+# Admin - edit security
+app.add_url_rule('/security/<pos>/<int:sec_id>/edit', 'edit_security', view_func=views.edit_security, methods=['GET', 'POST'])
+
+# Admin - delete security
+app.add_url_rule('/security/<pos>/<int:sec_id>/delete', view_func=views.delete_security, methods=['POST'])
+
+# Admin - portfolio
+app.add_url_rule('/admin/portfolio', 'admin_portfolio', view_func=views.admin_portfolio, methods=['GET', 'POST'])
 
 ## Error handlers
 # Handle 404 errors

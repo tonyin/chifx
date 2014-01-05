@@ -15,7 +15,7 @@ from flask_cache import Cache
 from application import app
 from decorators import login_required, admin_required
 from forms import SecurityForm, OrderForm
-from models import Security, Order, Trade
+from models import Security, Order, Trade, Portfolio
 
 
 # Flask-Cache (configured to use App Engine Memcache API)
@@ -46,24 +46,32 @@ def sec_info(pos, sec_id):
     orders = Order.query(Order.security == sec, Order.active == True).order(-Order.timestamp)
     form = OrderForm()
     if form.validate_on_submit():
-        ord = Order(
-            user = user[0],
-            buysell = form.buysell.data,
-            security = sec,
-            price = form.price.data,
-            volume = form.volume.data,
-            active = True,
-            parent = sec.key
-        )
-        try:
-            ord.put()
-            ord_id = ord.key.id()
-            flash(u'Order %s successfully saved.' % ord_id, 'success')
-            scripts.match_orders(sec)
-            return redirect(url_for('sec_info', pos=pos, sec_id=sec_id))
-        except CapabilityDisabledError:
-            flash(u'App Engine Datastore is currently in read-only mode.', 'info')
-            return redirect(url_for('sec_info', pos=pos, sec_id=sec_id))
+        portfolio = Portfolio.query(Portfolio.user == user[0])
+        ptf = portfolio.get()
+        new_points = ptf.points - form.volume.data
+        if new_points >= 0:
+            ptf.points = new_points
+            ptf.put()
+            ord = Order(
+                user = user[0],
+                buysell = form.buysell.data,
+                security = sec,
+                price = form.price.data,
+                volume = form.volume.data,
+                active = True,
+                parent = sec.key
+            )
+            try:
+                ord.put()
+                ord_id = ord.key.id()
+                flash(u'Order %s successfully saved.' % ord_id, 'success')
+                scripts.match_orders(sec)
+                return redirect(url_for('sec_info', pos=pos, sec_id=sec_id))
+            except CapabilityDisabledError:
+                flash(u'App Engine Datastore is currently in read-only mode.', 'info')
+                return redirect(url_for('sec_info', pos=pos, sec_id=sec_id))
+        else:
+            flash(u'Only %d points left.' % ptf.points)
     return render_template('sec_info.html', user=user, pos=pos, sec=sec, book=book, orders=orders, form=form)
 
 @admin_required
@@ -79,7 +87,7 @@ def edit_security(pos, sec_id):
             sec.team = form.data.get('team')
             sec.put()
             flash(u'Security %s successfully saved.' % sec_id, 'success')
-            return redirect(url_for('admin_list'))
+            return redirect(url_for('admin_security'))
     return render_template('edit_security.html', user=user, sec=sec, form=form)
 
 @admin_required
@@ -89,24 +97,31 @@ def delete_security(pos, sec_id):
     try:
         sec.key.delete()
         flash(u'Security %s successfully deleted.' % sec_id, 'success')
-        return redirect(url_for('admin_list'))
+        return redirect(url_for('admin_security'))
     except CapabilityDisabledError:
         flash(u'App Engine Datastore is currently in read-only mode.', 'info')
-        return redirect(url_for('admin_list'))
+        return redirect(url_for('admin_security'))
 
 @login_required
 def portfolio(nickname):
-    """List all orders in a user's portfolio"""
+    """List all points, orders, and trades in a user's portfolio"""
     user = scripts.check_user(['portfolio'])
     orders = Order.query(Order.user == user[0], Order.active == True).order(Order.security.name, -Order.timestamp)
     trades = Trade.query(ndb.OR(Trade.buy_user == user[0], Trade.sell_user == user[0]))
-    return render_template('portfolio.html', user=user, orders=orders, trades=trades)
+    portfolio = Portfolio.query(Portfolio.user == user[0])
+    ptf = portfolio.get()
+    return render_template('portfolio.html', user=user, orders=orders, trades=trades, portfolio=ptf)
 
 @login_required
 def delete_order(nickname, ord_key):
     """Delete order"""
-    #ord = Order.get_by_id(ord_id, parent=)
+    user = scripts.check_user(['portfolio'])
     try:
+        portfolio = Portfolio.query(Portfolio.user == user[0])
+        ptf = portfolio.get()
+        ord = ndb.Key(urlsafe=ord_key)
+        ptf.points = ptf.points + ord.get().volume
+        ptf.put()
         ndb.Key(urlsafe=ord_key).delete()
         flash(u'Order %s successfully deleted.' % ord_key, 'success')
         return redirect(url_for('portfolio', nickname=nickname))
@@ -115,9 +130,9 @@ def delete_order(nickname, ord_key):
         return redirect(url_for('portfolio', nickname=nickname))
 
 @admin_required
-def admin_list():
-    """Admin create/edit view"""
-    user = scripts.check_user(['admin_list'])
+def admin_security():
+    """Admin manage securities"""
+    user = scripts.check_user(['admin_security'])
     securities = Security.query()
     form = SecurityForm()
     if form.validate_on_submit():
@@ -130,11 +145,22 @@ def admin_list():
             sec.put()
             sec_id = sec.key.id()
             flash(u'Security %s successfully saved.' % sec_id, 'success')
-            return redirect(url_for('admin_list'))
+            return redirect(url_for('admin_security'))
         except CapabilityDisabledError:
             flash(u'App Engine Datastore is currently in read-only mode.', 'info')
-            return redirect(url_for('admin_list'))
-    return render_template('admin_list.html', user=user, securities=securities, form=form)
+            return redirect(url_for('admin_security'))
+    return render_template('admin_security.html', user=user, securities=securities, form=form)
+
+@admin_required
+def admin_portfolio():
+    """Admin manage portfolios"""
+    user = scripts.check_user(['admin_portfolio'])
+    portfolios = Portfolio.query()
+    return render_template('admin_portfolio.html', user=user, portfolios=portfolios)
+
+@admin_required
+def edit_portfolio():
+    return
 
 def warmup():
     """App Engine warmup handler
@@ -142,4 +168,3 @@ def warmup():
 
     """
     return ''
-
