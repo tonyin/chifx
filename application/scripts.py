@@ -37,16 +37,17 @@ def check_user(view):
             log = users.create_login_url(url_for(view[0]))
     
     # Create a new portfolio if new user
-    ptfs = Portfolio.query(Portfolio.user == c_user)
-    ptfs = list(ptfs)
-    if len(ptfs) == 0:
-        ptf = Portfolio(
-            user = c_user,
-            points = START_POINTS
-        )
-        ptf.put()
-        ptf_id = ptf.key.id()
-        flash(u'Portfolio %s successfully created.' % ptf_id, 'success')
+    if c_user:
+        ptfs = Portfolio.query(Portfolio.user == c_user)
+        ptfs = list(ptfs)
+        if len(ptfs) == 0:
+            ptf = Portfolio(
+                user = c_user,
+                points = START_POINTS
+            )
+            ptf.put()
+            ptf_id = ptf.key.id()
+            flash(u'Portfolio %s successfully created.' % ptf_id, 'success')
     
     return [c_user, log]
 
