@@ -14,7 +14,6 @@ class Security(ndb.Model):
     position = ndb.StringProperty(required=True, choices=["qb","rb","wr"])
     name = ndb.StringProperty(required=True)
     team = ndb.StringProperty()
-    last = ndb.IntegerProperty()
 
 class Order(ndb.Model):
     """Orders on a security"""
