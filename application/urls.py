@@ -30,6 +30,9 @@ app.add_url_rule('/<nickname>/portfolio', 'portfolio', view_func=views.portfolio
 # Delete order
 app.add_url_rule('/<nickname>/portfolio/<ord_key>/delete', 'delete_order', view_func=views.delete_order, methods=['GET', 'POST'])
 
+# Comment
+app.add_url_rule('/comment', 'comment', view_func=views.comment, methods=['GET', 'POST'])
+
 # Admin - securities
 app.add_url_rule('/admin/security', 'admin_security', view_func=views.admin_security, methods=['GET', 'POST'])
 
@@ -41,6 +44,9 @@ app.add_url_rule('/security/<pos>/<int:sec_id>/delete', view_func=views.delete_s
 
 # Admin - portfolio
 app.add_url_rule('/admin/portfolio', 'admin_portfolio', view_func=views.admin_portfolio, methods=['GET', 'POST'])
+
+# Admin - comment
+app.add_url_rule('/admin/comment', 'admin_comment', view_func=views.admin_comment, methods=['GET'])
 
 ## Error handlers
 # Handle 404 errors

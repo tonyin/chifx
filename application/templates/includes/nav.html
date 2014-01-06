@@ -25,6 +25,9 @@
                         <a href="{{ url_for('portfolio', nickname=user[0].nickname()) }}">My Portfolio</a>
 						{% endif %}
                     </li>
+                    <li>
+                        <a href="{{ url_for('comment') }}">Feedback</a>
+                    </li>
                 </ul>
                 {% if user[0] %}
                 <ul class="nav">

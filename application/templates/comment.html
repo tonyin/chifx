@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block style_block %}
+    <style type="text/css">
+        table.table { width: 60%; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Comment</h2>
+    <div>&nbsp;</div>
+    
+    <p>Any feedback is appreciated, thank you!</p>
+    <p>
+        <a class="btn btn-primary" data-toggle="modal" data-target="#new-comment-modal">
+            <i class="icon-plus-sign icon-white"></i>
+            New comment
+        </a>
+    </p>
+    {% include 'new_comment.html' %}
+
+{% endblock content %}
+
+{% block tail_script %}
+    <script>
+        var FormHelpers = {
+            validate: function (form, evt) {
+                // Form validation for modal dialog
+                var name = form.find('#name').val();
+                var comment = form.find('#comment').val();
+                if (!(name)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#name', 'Name is required', 'right');
+                }
+                if (!(comment)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#comment', 'Comment is required', 'right');
+                }
+            },
+            init: function () {
+                var self = this;
+                var comment_form = $('#comment-form');
+                comment_form.on('submit', function (evt) {
+                    self.validate(comment_form, evt)
+                });
+            }
+        };
+        $(document).ready(function() {
+            FormHelpers.init();
+        });
+    </script>
+{% endblock tail_script %}

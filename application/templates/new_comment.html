@@ -1,0 +1,46 @@
+<div class="modal hide fade" id="new-comment-modal">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>Add a New Comment</h3>
+    </div>
+    <div class="modal-body">
+        <form id="new-comment-form" class="well form-horizontal"
+            action="{{ url_for('comment') }}" method="post" accept-charset="utf-8">
+            <fieldset>
+                {{ form.hidden_tag() }}
+                <div class="control-group">
+                    <div class="control-label">{{ form.name.label }}</div>
+                    <div class="controls">
+                        {{ form.name|safe }}
+                        {% if form.name.errors %}
+                        <ul class="errors">
+                            {% for error in form.name.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">{{ form.comment.label }}</div>
+                    <div class="controls">
+                        {{ form.comment|safe }}
+                        {% if form.comment.errors %}
+                        <ul class="errors">
+                            {% for error in form.comment.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="btn btn-primary" type="submit" value="Add Comment"/>
+                        <button class="btn" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

@@ -38,3 +38,9 @@ class Portfolio(ndb.Model):
     """Portfolio storing order and trade info"""
     user = ndb.UserProperty(required=True)
     points = ndb.IntegerProperty(required=True)
+
+class Comment(ndb.Model):
+    """Comments"""
+    name = ndb.StringProperty(required=True)
+    comment = ndb.TextProperty(required=True)
+    timestamp = ndb.DateTimeProperty(auto_now_add=True)

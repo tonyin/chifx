@@ -14,8 +14,8 @@ from flask_cache import Cache
 
 from application import app
 from decorators import login_required, admin_required
-from forms import SecurityForm, OrderForm
-from models import Security, Order, Trade, Portfolio
+from forms import SecurityForm, OrderForm, CommentForm
+from models import Security, Order, Trade, Portfolio, Comment
 
 
 # Flask-Cache (configured to use App Engine Memcache API)
@@ -74,35 +74,6 @@ def sec_info(pos, sec_id):
             flash(u'Only %d points left.' % ptf.points)
     return render_template('sec_info.html', user=user, pos=pos, sec=sec, book=book, orders=orders, form=form)
 
-@admin_required
-def edit_security(pos, sec_id):
-    """Edit security attributes"""
-    user = scripts.check_user(['edit_security', pos, sec_id])
-    sec = Security.get_by_id(sec_id)
-    form = SecurityForm(obj=sec)
-    if request.method == "POST":
-        if form.validate_on_submit():
-            sec.position = form.data.get('position')
-            sec.name = form.data.get('name')
-            sec.team = form.data.get('team')
-            sec.put()
-            flash(u'Security %s successfully saved.' % sec_id, 'success')
-            return redirect(url_for('admin_security'))
-        flash(form.errors)
-    return render_template('edit_security.html', user=user, sec=sec, form=form)
-
-@admin_required
-def delete_security(pos, sec_id):
-    """Delete security"""
-    sec = Security.get_by_id(sec_id)
-    try:
-        sec.key.delete()
-        flash(u'Security %s successfully deleted.' % sec_id, 'success')
-        return redirect(url_for('admin_security'))
-    except CapabilityDisabledError:
-        flash(u'App Engine Datastore is currently in read-only mode.', 'info')
-        return redirect(url_for('admin_security'))
-
 @login_required
 def portfolio(nickname):
     """List all points, orders, and trades in a user's portfolio"""
@@ -130,6 +101,26 @@ def delete_order(nickname, ord_key):
         flash(u'App Engine Datastore is currently in read-only mode.', 'info')
         return redirect(url_for('portfolio', nickname=nickname))
 
+@login_required
+def comment():
+    """Add a comment"""
+    user = scripts.check_user(['comment'])
+    form = CommentForm()
+    if form.validate_on_submit():
+        cmt = Comment(
+            name = form.name.data,
+            comment = form.comment.data,
+        )
+        try:
+            cmt.put()
+            cmt_id = cmt.key.id()
+            flash(u'Thanks for the feedback! Comment %s successfully saved.' % cmt_id, 'success')
+            return redirect(url_for('comment'))
+        except CapabilityDisabledError:
+            flash(u'App Engine Datastore is currently in read-only mode.', 'info')
+            return redirect(url_for('comment'))
+    return render_template('comment.html', user=user, form=form)
+
 @admin_required
 def admin_security():
     """Admin manage securities"""
@@ -153,6 +144,34 @@ def admin_security():
     return render_template('admin_security.html', user=user, securities=securities, form=form)
 
 @admin_required
+def edit_security(pos, sec_id):
+    """Edit security attributes"""
+    user = scripts.check_user(['edit_security', pos, sec_id])
+    sec = Security.get_by_id(sec_id)
+    form = SecurityForm(obj=sec)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            sec.position = form.data.get('position')
+            sec.name = form.data.get('name')
+            sec.team = form.data.get('team')
+            sec.put()
+            flash(u'Security %s successfully saved.' % sec_id, 'success')
+            return redirect(url_for('admin_security'))
+    return render_template('edit_security.html', user=user, sec=sec, form=form)
+
+@admin_required
+def delete_security(pos, sec_id):
+    """Delete security"""
+    sec = Security.get_by_id(sec_id)
+    try:
+        sec.key.delete()
+        flash(u'Security %s successfully deleted.' % sec_id, 'success')
+        return redirect(url_for('admin_security'))
+    except CapabilityDisabledError:
+        flash(u'App Engine Datastore is currently in read-only mode.', 'info')
+        return redirect(url_for('admin_security'))
+
+@admin_required
 def admin_portfolio():
     """Admin manage portfolios"""
     user = scripts.check_user(['admin_portfolio'])
@@ -162,6 +181,13 @@ def admin_portfolio():
 @admin_required
 def edit_portfolio():
     return
+
+@admin_required
+def admin_comment():
+    """Admin view comments"""
+    user = scripts.check_user(['admin_comment'])
+    comments = Comment.query()
+    return render_template('admin_comment.html', user=user, comments=comments)
 
 def warmup():
     """App Engine warmup handler
