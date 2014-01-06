@@ -81,7 +81,7 @@ def edit_security(pos, sec_id):
     sec = Security.get_by_id(sec_id)
     form = SecurityForm(obj=sec)
     if request.method == "POST":
-        flash("GOT HERE")
+        flash(form.data.get('position') + " " + form.data.get('name') + " " + form.data.get('team'))
         if form.validate_on_submit():
             sec.position = form.data.get('position')
             sec.name = form.data.get('name')
