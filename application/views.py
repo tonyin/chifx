@@ -81,7 +81,6 @@ def edit_security(pos, sec_id):
     sec = Security.get_by_id(sec_id)
     form = SecurityForm(obj=sec)
     if request.method == "POST":
-        flash(form.errors)
         if form.validate_on_submit():
             sec.position = form.data.get('position')
             sec.name = form.data.get('name')
@@ -89,6 +88,7 @@ def edit_security(pos, sec_id):
             sec.put()
             flash(u'Security %s successfully saved.' % sec_id, 'success')
             return redirect(url_for('admin_security'))
+        flash(form.errors)
     return render_template('edit_security.html', user=user, sec=sec, form=form)
 
 @admin_required
