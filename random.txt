@@ -3,3 +3,10 @@ implement error handling of non-existent entities
 get rid of (convert to?) decimal points
 generate sec_info link with each portfolio order
 last traded price for each security
+best bid best ask
+upcoming team against
+price chart
+best bid best ask very prominent in orders page
+show small depth in orders
+navigation
+active user count - # unique ids pushing/pulling in a certain time frame
