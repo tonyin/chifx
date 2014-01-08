@@ -7,6 +7,5 @@ best bid best ask
 upcoming team against
 price chart
 best bid best ask very prominent in orders page
-show small depth in orders
 navigation
 active user count - # unique ids pushing/pulling in a certain time frame

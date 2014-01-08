@@ -15,7 +15,7 @@ from datetime import datetime
 from models import Security, Order, Trade, Portfolio
 
 
-BOOK_TOP_LEVELS = 4
+BOOK_TOP_LEVELS = 2
 START_POINTS = 1000
 
 position = {
@@ -86,7 +86,7 @@ def construct_book(sec):
     s2 = {}
     for order in s1:
         s2[order.price] = s2.get(order.price, 0) + order.volume
-    s2 = OrderedDict(sorted(s2.items(), reverse = True))
+    s2 = OrderedDict(sorted(s2.items()))
     
     # Get top of sell book
     n = list(islice(s2.items(), 0, 1))
