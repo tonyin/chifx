@@ -5,21 +5,36 @@
 
 {% block content %}
     
-    <h2>2014 NFL Divisional Playoffs</h2>
-    <h4>Duration: 01/05/14 - 01/12/14</h4>
-    <h4>Welcome to the first round of ChiFX free-play. Instructions:</h4>
+    <h2>2014 NFL Conference Championships</h2>
     <ol>
-        <li>Log in using your Google account</li>
-        <li>Everyone starts with $1000 fake money, $1 for 1 volume order</li>
-        <li>Browse the player "securities" and see where the markets are trading</li>
-        <li>Submit buy/sell orders on the players</li>
+        <li>Duration: 01/17/14 - 01/19/14</li>
+        <li>Everyone starts with $1000 fake money</li>
+        <li>Buy or Sell players at your projected point levels</li>
         <li>View your active orders and completed trades under "My Portfolio"</li>
-        <li>Securities close end-of-day 01/12/14 at a value based on the scoring system below</li>
+        <li>At end of day 01/19/14, we will post up a leaderboard showing who made the most money</li>
     </ol>
-    <h4>Scoring system:</h4>
+    <h4>Scoring system</h4>
     <p>QB: touchdown(+4 passing, +6 rushing); 25yds(+1); sack(-1); interception(-2); fumble(-2)</p>
-    
-    <br /><br />
+    <br /><hr />
+    <h4>Example for "Buy"</h4>
+    <ul>
+        <li>I think Russell Wilson will score more than 20 points on Sunday</li>
+        <li>On Russell Wilson's page, I submit a "Buy" order for 200 volume at a point level of 20</li>
+        <li>If someone is already willing to sell Russell Wilson at a point level of 20 or lower, then my order will trade against their order</li>
+        <li>If no one is selling there, then my "Buy" order will be resting in the order book, waiting for someone else to sell against it</li>
+        <li>Settlement: If Russell Wilson puts up 3 passing touchdowns (+12 pts), 300 yds (+12), and 1 interception (-2) for a total of 22 points, <strong>I would make (22-20)*200 = $400</strong>, assuming all 200 of my "Buy" order traded</li>
+        <li>Settlement: If Russell Wilson only puts up 18 points, <strong>I would lose (18-20)*200 = $-400</strong>, assuming all 200 of my "Buy" order traded</li>
+    </ul>
+    <h4>Example for "Sell"</h4>
+    <ul>
+        <li>I think Tom Brady will score less than 25 points on Sunday</li>
+        <li>On Tom Brady's page, I submit a "Sell" order for 200 volume at a point level of 25</li>
+        <li>If someone is already willing to buy Tom Brady at a point level of 25 or high, then my order will trade against their order</li>
+        <li>If no one is buying there, then my "Sell" order will be resting in the order book, waiting for someone else to buy against it</li>
+        <li>Settlement: If Tom Brady puts up 1 passing touchdown (+4 pts), 250 yds (+10), and 2 interception (-4) for a total of 10 points, <strong>I would make (25-10)*200 = $3000</strong>, assuming all 200 of my "Sell" order traded</li>
+        <li>Settlement: If Tom Brady puts up a monster 35 points, <strong>I would lose (25-35)*200 = $-2000</strong>, assuming all 200 of my "Sell" order traded</li>
+    </ul>
+    <br /><br /><hr />
     <h4>Chicago Fantasy Exchange (ChiFX) is an exchange trading platform aiming to provide both an avenue of speculation and a source of market-based information for fantasy football points.</h4>
     <div>&nbsp;</div>
 

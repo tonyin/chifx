@@ -13,7 +13,6 @@
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Team</th>
             </tr>
@@ -22,7 +21,6 @@
             {% for p in securities %}
             {% set p_id = p.key.id() %}
             <tr>
-                <td>{{ p_id }}</td>
                 <td>
 					<a href="{{ url_for('sec_info', pos=pos, sec_id=p_id) }}">{{ p.name }}</a>
 				</td>
