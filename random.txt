@@ -10,3 +10,5 @@ best bid best ask very prominent in orders page
 navigation
 active user count - # unique ids pushing/pulling in a certain time frame
 clickable bid/ask to quick trade for a certain volume
+
+buy-in. play. payout prize at end of round relative to pool.
