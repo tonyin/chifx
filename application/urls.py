@@ -48,6 +48,9 @@ app.add_url_rule('/admin/portfolio', 'admin_portfolio', view_func=views.admin_po
 # Admin - comment
 app.add_url_rule('/admin/comment', 'admin_comment', view_func=views.admin_comment, methods=['GET'])
 
+# Admin - trades
+app.add_url_rule('/admin/trades', 'admin_trades', view_func=views.admin_trades, methods=['GET'])
+
 ## Error handlers
 # Handle 404 errors
 @app.errorhandler(404)

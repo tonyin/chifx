@@ -189,6 +189,13 @@ def admin_comment():
     comments = Comment.query()
     return render_template('admin_comment.html', user=user, comments=comments)
 
+@admin_required
+def admin_trades():
+    """Admin view trades"""
+    user = scripts.check_user(['admin_trades'])
+    trades = Trade.query()
+    return render_template('admin_trades.html', user=user, trades=trades)
+
 def warmup():
     """App Engine warmup handler
     See http://code.google.com/appengine/docs/python/config/appconfig.html#Warming_Requests
