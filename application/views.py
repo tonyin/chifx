@@ -38,6 +38,13 @@ def security(pos):
     return render_template('security.html', user=user, pos=pos, title=title, securities=securities)
 
 @login_required
+def securities():
+    """List all securities"""
+    user = scripts.check_user(['securities'])
+    securities = Security.query()
+    return render_template('securities.html', user=user, securities=securities)
+
+@login_required
 def sec_info(pos, sec_id):
     """Individual security info"""
     user = scripts.check_user(['sec_info', pos, sec_id])

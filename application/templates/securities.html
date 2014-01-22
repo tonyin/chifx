@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block style_block %}
+    <style type="text/css">
+        table.table { width: 60%; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h2>All Securities</h2>
+    <div>&nbsp;</div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Team</th>
+                <th>Position</th>
+                <th>Last Traded</th>
+                <th>Best Bid</th>
+                <th>Best Ask</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in securities %}
+            {% set p_id = p.key.id() %}
+            <tr>
+                <td>
+					<a href="{{ url_for('sec_info', pos=p.position, sec_id=p_id) }}">{{ p.name }}</a>
+				</td>
+                <td>{{ p.team }}</td>
+                <td>{{ p.position }}</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}
+
+{% block tail_script %}
+{% endblock tail_script %}

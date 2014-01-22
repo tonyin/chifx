@@ -21,6 +21,9 @@ app.add_url_rule('/', 'index', view_func=views.index)
 # Security
 app.add_url_rule('/security/<pos>', 'security', view_func=views.security)
 
+# Securities
+app.add_url_rule('/securities', 'securities', view_func=views.securities)
+
 # Security info
 app.add_url_rule('/security/<pos>/<int:sec_id>', 'sec_info', view_func=views.sec_info, methods=['GET', 'POST'])
 
