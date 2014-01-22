@@ -156,6 +156,14 @@ indexes:
   - name: timestamp
 
 - kind: Trade
+  properties:
+  - name: security.name
+  - name: security.position
+  - name: security.team
+  - name: timestamp
+    direction: desc
+
+- kind: Trade
   ancestor: yes
   properties:
   - name: security.name

@@ -52,6 +52,7 @@ def sec_info(pos, sec_id):
     sec = Security.get_by_id(sec_id)
     book = scripts.construct_book(sec)
     orders = Order.query(Order.security == sec, Order.active == True).order(-Order.timestamp)
+    trades = Trade.query(Trade.security == sec).order(-Trade.timestamp)
     form = OrderForm()
     if form.validate_on_submit():
         portfolio = Portfolio.query(Portfolio.user == user[0])
@@ -80,7 +81,7 @@ def sec_info(pos, sec_id):
                 return redirect(url_for('sec_info', pos=pos, sec_id=sec_id))
         else:
             flash(u'Only %d points left.' % ptf.points)
-    return render_template('sec_info.html', user=user, pos=pos, sec=sec, book=book, orders=orders, form=form)
+    return render_template('sec_info.html', user=user, pos=pos, sec=sec, book=book, orders=orders, trades=trades, form=form)
 
 @login_required
 def portfolio(nickname):
