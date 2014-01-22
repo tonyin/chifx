@@ -56,6 +56,7 @@ def sec_tops(secs):
     bb = {}
     ba = {}
     for sec in secs:
+        # Last traded price
         t = Trade.query(Trade.security == sec).order(Trade.timestamp)
         t = list(t)
         if len(t) > 0:
@@ -63,6 +64,7 @@ def sec_tops(secs):
         else:
             lt[sec.key.id()] = 0
         
+        # Best bid
         t = Order.query(Order.security == sec, Order.buysell == 'Buy', Order.active == True).order(-Order.price)
         t = list(t)
         if len(t) > 0:
@@ -70,6 +72,7 @@ def sec_tops(secs):
         else:
             bb[sec.key.id()] = 0
         
+        # Best ask
         t = Order.query(Order.security == sec, Order.buysell == 'Sell', Order.active == True).order(Order.price)
         t = list(t)
         if len(t) > 0:
@@ -160,36 +163,43 @@ def match_orders(sec):
             t.sell_user = s[sn].user
             t.security = b[bn].security
             t.price = b[bn].price
+            b[bn] = b[bn].key.get()
+            s[sn] = s[sn].key.get()
+            b_ptf = Portfolio.query(Portfolio.user == b[bn].user).get()
+            s_ptf = Portfolio.query(Portfolio.user == s[sn].user).get()
             if b[bn].volume > s[sn].volume:
                 t.volume = s[sn].volume
-                b[bn] = b[bn].key.get()
-                s[sn] = s[sn].key.get()
                 b[bn].volume += -s[sn].volume
                 s[sn].active = False
+                b_ptf.points += s[sn].volume
+                s_ptf.points += s[sn].volume
                 b[bn].put()
                 s[sn].put()
                 sn += 1
             elif b[bn].volume < s[sn].volume:
                 t.volume = b[bn].volume
-                b[bn] = b[bn].key.get()
-                s[sn] = s[sn].key.get()
                 s[sn].volume += -b[bn].volume
                 b[bn].active = False
+                b_ptf.points += b[bn].volume
+                s_ptf.points += b[bn].volume
                 b[bn].put()
                 s[sn].put()
                 bn += 1
             elif b[bn].volume == s[sn].volume:
                 t.volume = b[bn].volume
-                b[bn] = b[bn].key.get()
-                s[sn] = s[sn].key.get()
                 b[bn].volume = 0
                 s[sn].volume = 0
                 b[bn].active = False
                 s[sn].active = False
+                b_ptf.points += b[bn].volume
+                s_ptf.points += b[bn].volume
                 b[bn].put()
                 s[sn].put()
                 bn += 1
                 sn += 1
+            b_ptf.put()
+            s_ptf.put()
             t.put()
+            flash(u'Trade %s successfully completed.' % t.key.id(), 'success')
             continue
         break
