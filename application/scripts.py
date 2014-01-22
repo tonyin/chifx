@@ -51,6 +51,35 @@ def check_user(view):
     
     return [c_user, log]
 
+def sec_tops(secs):
+    lt = {}
+    bb = {}
+    ba = {}
+    for sec in secs:
+        t = Trade.query(Trade.security == sec).order(Trade.timestamp)
+        t = list(t)
+        if len(t) > 0:
+            lt[sec.key.id()] = t[0].price
+        else:
+            lt[sec.key.id()] = 0
+        
+        t = Order.query(Order.security == sec, Order.buysell == 'Buy', Order.active == True).order(-Order.price)
+        t = list(t)
+        if len(t) > 0:
+            bb[sec.key.id()] = t[0].price
+        else:
+            bb[sec.key.id()] = 0
+        
+        t = Order.query(Order.security == sec, Order.buysell == 'Sell', Order.active == True).order(Order.price)
+        t = list(t)
+        if len(t) > 0:
+            ba[sec.key.id()] = t[0].price
+        else:
+            ba[sec.key.id()] = 0
+    
+    tops = {'lt':lt, 'bb':bb, 'ba':ba}
+    return tops
+
 def construct_book(sec): 
     """Create buy and sell top depths"""
     # Get sorted
@@ -140,7 +169,6 @@ def match_orders(sec):
                 b[bn].put()
                 s[sn].put()
                 sn += 1
-                
             elif b[bn].volume < s[sn].volume:
                 t.volume = b[bn].volume
                 b[bn] = b[bn].key.get()
@@ -163,10 +191,5 @@ def match_orders(sec):
                 bn += 1
                 sn += 1
             t.put()
-            
-            # Update security last traded price
-            #sec.last = t.price
-            #sec.put()
-            
             continue
         break

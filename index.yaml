@@ -13,6 +13,25 @@ indexes:
 - kind: Order
   properties:
   - name: active
+  - name: buysell
+  - name: security.name
+  - name: security.position
+  - name: security.team
+  - name: price
+
+- kind: Order
+  properties:
+  - name: active
+  - name: buysell
+  - name: security.name
+  - name: security.position
+  - name: security.team
+  - name: price
+    direction: desc
+
+- kind: Order
+  properties:
+  - name: active
   - name: security.last
   - name: security.name
   - name: security.position
@@ -127,4 +146,19 @@ indexes:
   - name: security.team
   - name: price
     direction: desc
+  - name: timestamp
+
+- kind: Trade
+  properties:
+  - name: security.name
+  - name: security.position
+  - name: security.team
+  - name: timestamp
+
+- kind: Trade
+  ancestor: yes
+  properties:
+  - name: security.name
+  - name: security.position
+  - name: security.team
   - name: timestamp

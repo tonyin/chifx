@@ -42,7 +42,8 @@ def securities():
     """List all securities"""
     user = scripts.check_user(['securities'])
     securities = Security.query()
-    return render_template('securities.html', user=user, securities=securities)
+    tops = scripts.sec_tops(securities)
+    return render_template('securities.html', user=user, securities=securities, tops=tops)
 
 @login_required
 def sec_info(pos, sec_id):
