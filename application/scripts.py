@@ -57,7 +57,7 @@ def sec_tops(secs):
     ba = {}
     for sec in secs:
         # Last traded price
-        t = Trade.query(Trade.security == sec).order(Trade.timestamp)
+        t = Trade.query(Trade.security == sec).order(-Trade.timestamp)
         t = list(t)
         if len(t) > 0:
             lt[sec.key.id()] = t[0].price
