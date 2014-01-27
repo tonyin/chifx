@@ -82,7 +82,6 @@
 		<thead>
 			<tr>
 				<th>Timestamp</th>
-                <th>User</th>
 				<th>Buy/Sell</th>
 				<th>Point Level</th>
 				<th>Volume</th>
@@ -93,7 +92,6 @@
 			{% for order in orders %}
 			<tr>
 				<td>{{ order.timestamp }}</td>
-                <td>{{ order.user }}</td>
 				<td>{{ order.buysell }}</td>
 				<td>{{ order.price }}</td>
 				<td>{{ order.volume }}</td>
