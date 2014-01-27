@@ -106,8 +106,6 @@
 		<thead>
 			<tr>
 				<th>Timestamp</th>
-                <th>Buyer</th>
-				<th>Seller</th>
 				<th>Point Level</th>
 				<th>Volume</th>
 			</tr>
@@ -117,8 +115,6 @@
 			{% for trade in trades %}
 			<tr>
 				<td>{{ trade.timestamp }}</td>
-                <td>{{ trade.buy_user }}</td>
-                <td>{{ trade.sell_user }}</td>
 				<td>{{ trade.price }}</td>
 				<td>{{ trade.volume }}</td>
 			</tr>
