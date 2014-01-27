@@ -140,7 +140,7 @@ def construct_book(sec):
     
     return book
 
-def match_orders(sec):
+def match_orders(sec, buysell):
     """Match orders in cross"""
     # Get buy and sell lists
     b = Order.query(Order.security == sec, Order.buysell == 'Buy', Order.active == True, ancestor=sec.key).order(-Order.price, Order.timestamp)
@@ -162,7 +162,10 @@ def match_orders(sec):
             t.buy_user = b[bn].user
             t.sell_user = s[sn].user
             t.security = b[bn].security
-            t.price = b[bn].price
+            if buysell == "Buy":
+                t.price = s[sn].price
+            else:
+                t.price = b[bn].price
             b[bn] = b[bn].key.get()
             s[sn] = s[sn].key.get()
             b_ptf = Portfolio.query(Portfolio.user == b[bn].user).get()

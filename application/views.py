@@ -74,7 +74,7 @@ def sec_info(pos, sec_id):
                 ord.put()
                 ord_id = ord.key.id()
                 flash(u'Order %s successfully saved.' % ord_id, 'success')
-                scripts.match_orders(sec)
+                scripts.match_orders(sec, form.buysell.data)
                 return redirect(url_for('sec_info', pos=pos, sec_id=sec_id))
             except CapabilityDisabledError:
                 flash(u'App Engine Datastore is currently in read-only mode.', 'info')
