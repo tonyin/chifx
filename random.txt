@@ -1,14 +1,12 @@
-fix new order/security popup errors
 implement error handling of non-existent entities
 get rid of (convert to?) decimal points
 generate sec_info link with each portfolio order
-last traded price for each security
-best bid best ask
 upcoming team against
-price chart
 best bid best ask very prominent in orders page
 navigation
 active user count - # unique ids pushing/pulling in a certain time frame
 clickable bid/ask to quick trade for a certain volume
 
-buy-in. play. payout prize at end of round relative to pool.
+ongoing:
+race condition in user portfolio
+aware timezones

@@ -190,8 +190,6 @@ def match_orders(sec, buysell):
                 bn += 1
             elif b[bn].volume == s[sn].volume:
                 t.volume = b[bn].volume
-                b[bn].volume = 0
-                s[sn].volume = 0
                 b[bn].active = False
                 s[sn].active = False
                 b_ptf.points += b[bn].volume

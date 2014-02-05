@@ -1,23 +1,54 @@
 {% extends "base.html" %}
 
 {% block style_block %}
+    <style type="text/css">
+        table.table { width: 60%; }
+    </style>
 {% endblock %}
 
 {% block content %}
     
-    <h2>2014 NFL Super Bowl</h2>
-    <h4>The Game</h4>
-    <p>Chicago Fantasy Exchange offers you the chance to speculate on and profit from players' fantasy performances by trading against other fans in a marketplace. We are currently in a trial run phase- each user starts with a 1000 contract bankroll. For the Super Bowl this week, there are ten securities offered: 2 QBs, 6 WRs, and 2 RBs. The trading phase will begin Sunday, 01/26/14 and end Sunday, 02/02/14.</p>
-    <h4>The Goal</h4>
-    <p>With a 1000 contract bankroll, each user has the goal of making the most money in any given week from trading the offered securities, either by holding them to the point of settlement (the end of the game) or trading out of them for a profit. <strong>The winner of the Super Bowl round will receive a $100 gift card to Amazon.</strong> Leaderboard and results will be sent out to all participants at the conclusion of the round.</p>
-    <h4>How To Trade</h4>
-    <ol>
-        <li><strong>Pick a player security</strong><br />Let's choose Peyton Manning from the "Securities" page.</li>
-        <li><strong>Figure out your own valuation of the player</strong><br />Let's say I think Manning is going to put up 25 fantasy points in the Super Bowl. That means I would want to buy from anyone willing to sell below 25, and I would want to sell to anyone willing to buy over 25.</li>
-        <li><strong>Execute a trade</strong><br />I can place a 23 bid for 100 contracts on Manning by clicking the "New Order" button, and inputting the point level and number of contracts I want to trade at that level. Now my bid is represented in the market, and someone can sell it if they choose. Alternatively, if the market already has an offer at a point level below my valuation of Manning, I can input a new order to buy the contracts offered out there currently.</li>
-        <li><strong>Manage your portfolio</strong><br />The "My Portfolio" page allows you to see all of your active orders (bids and offers you have placed in the market that have yet to be traded against) as well as those that are completed. You have a max trading allowance of 1000 contracts, although if you are able to trade out of your completed trades, then your bankroll is redeemed. For example, if my only trade was buying 100 Manning contracts for 23, and now someone else is willing to buy 100 Manning contracts for 25, I can sell those 100 contracts at 25 and lock in a gain of 200 (100 * (25-23)); my bankroll will consequently be redeemed back to 1000 contracts.</li>
-        <li><strong>Win</strong><br />Make the most money any way you can. Your only limitations are your bankroll, otherwise you can trade any security as much or as little as you like, provided the liquidity is there. Good luck!</li>
-    </ol>
+    <h2>Thank You!</h2>
+    <h4>What's Next?</h4>
+    <p>With the conclusion of the 2013-14 NFL season, ChiFX has finished our prototype rounds with fantasy football points. We are working hard towards our new platform with plenty of new features, so make sure to leave your email on our <strong><a href="/comment">Feedback</a></strong> page for updates. We are also looking into hosting more competitions for different sports during the NFL offseason; if you have suggestions we would be happy to hear them.</p>
+    <br />
+    <h4>NFL Super Bowl XLVIII</h4>
+    <p>Our second prototype round ran from Jan 26 - Feb 2, 2014, and had many feature improvements over the first. We had 23 people actively trading 10 securities- the QBs, WRs, and RBs from the Seahawks and the Broncos. The winner of the $100 Amazon gift card went to DS, who made 11 trades and scored 11,633 points. The full leaderboard is shown below. For full analysis on settlement values and trades, leave a request on our <strong><a href="/comment">Feedback</a></strong> page.</p>
+    <h5>Leaderboard</h5>
+    <table class="table table-striped table-hover table-condensed">
+        <tr><td><strong>Rank</strong></td><td><strong>Trader</strong></td><td><strong>Trades</strong></td><td><strong>P/L</strong></td></tr>
+        <tr><td>1</td><td>DS</td><td>11</td><td>11633</td></tr>
+        <tr><td>2</td><td>AGZ</td><td>9</td><td>4851</td></tr>
+        <tr><td>3</td><td>BY</td><td>11</td><td>3628</td></tr>
+        <tr><td>4</td><td>AG</td><td>10</td><td>4650</td></tr>
+        <tr><td>5</td><td>SS</td><td>17</td><td>1796</td></tr>
+        <tr><td>6</td><td>WD</td><td>5</td><td>1482</td></tr>
+        <tr><td>7</td><td>JD</td><td>12</td><td>130</td></tr>
+        <tr><td>8</td><td>TY</td><td>14</td><td>1003</td></tr>
+        <tr><td>9</td><td>TZ</td><td>8</td><td>1120</td></tr>
+        <tr><td>10</td><td>TO</td><td>1</td><td>69</td></tr>
+        <tr><td>11</td><td>DP</td><td>3</td><td>-35</td></tr>
+        <tr><td>12</td><td>DJ</td><td>1</td><td>-54</td></tr>
+        <tr><td>13</td><td>DC</td><td>1</td><td>-610</td></tr>
+        <tr><td>14</td><td>MS</td><td>11</td><td>-611</td></tr>
+        <tr><td>15</td><td>DN</td><td>3</td><td>-1080</td></tr>
+        <tr><td>16</td><td>DR</td><td>7</td><td>-977</td></tr>
+        <tr><td>17</td><td>JW</td><td>8</td><td>-2714</td></tr>
+        <tr><td>18</td><td>SL</td><td>17</td><td>-2985</td></tr>
+        <tr><td>19</td><td>ER</td><td>4</td><td>-2476</td></tr>
+        <tr><td>20</td><td>KE</td><td>9</td><td>-2350</td></tr>
+        <tr><td>21</td><td>MG</td><td>13</td><td>-3422</td></tr>
+        <tr><td>22</td><td>JY</td><td>12</td><td>-3501</td></tr>
+        <tr><td>23</td><td>AA</td><td>11</td><td>-9546</td></tr>
+    </table>
+    <br />
+    <h4>NFL Conference Championships</h4>
+    <p>Our first protoype round was conducted from Jan 12 - Jan 19, 2014. We had 13 people actively trade 4 securities- the QBs from the participating teams. Before the games, our markets were able to trade within 2 points of the final settlement values for three of the four QBs. Highlights include: </p>
+    <ul>
+        <li><strong>Sellers Market</strong> - Of the 33 trades, 24 won from the short side
+        <li><strong>Securities Liquidity</strong> - Peyton Manning traded the most volume, while Russell Wilson traded the least
+        <li><strong>Wilson Misses</strong> - Seahawks fans and Wilson supporters got rocked, with Wilson missing pre-market valuation by 10 points
+    </ul>
     <br />
     <h4>Scoring system</h4>
     <p>
@@ -27,7 +58,9 @@
     </p>
     
     <hr /><br /><br />
-    <h4>Chicago Fantasy Exchange (ChiFX) is a fantasy sports trading platform aiming to provide both an avenue of speculation and a source of market-based information for fantasy points.</h4>
+    <p>
+        <em>Chicago Fantasy Exchange (ChiFX) is a fantasy sports trading platform aiming to provide both an avenue of speculation and a source of market-based information for fantasy points.</em>
+    </p>
     <div>&nbsp;</div>
 
 {% endblock content %}

@@ -19,7 +19,7 @@
       data.addRows([
         {% if trades %}
         {% for t in trades %}
-        [new Date({{ t.timestamp.year }}, {{ t.timestamp.month }}, {{ t.timestamp.day }}, {{ t.timestamp.hour }}-6, {{ t.timestamp.minute }}, {{ t.timestamp.second }}), {{ t.price }}],
+            [new Date({{ t.timestamp.year }}, {{ t.timestamp.month }}, {{ t.timestamp.day }}, {{ t.timestamp.hour }}, {{ t.timestamp.minute }}, {{ t.timestamp.second }}), {{ t.price }}],
         {% endfor %}
         {% endif %}
       ]);
